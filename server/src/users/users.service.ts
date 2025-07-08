@@ -1,6 +1,12 @@
-import { Injectable, UnauthorizedException, ForbiddenException, NotFoundException } from '@nestjs/common';
+import {
+        Injectable,
+        UnauthorizedException,
+        ForbiddenException,
+        NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Children } from '../schemas/children.schema';
 import { CreateUserDto } from '../dto/users/create.users.dto';
 import { UpdateUserDto } from '../dto/users/update.users.dto';
 import { User } from '../schemas/user.schema';
@@ -8,7 +14,11 @@ import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
-        constructor(@InjectModel(User.name) private userModel: Model<User>) { }
+        constructor(
+                @InjectModel(User.name) private userModel: Model<User>,
+                @InjectModel(Children.name)
+                private childrenModel: Model<Children>,
+        ) {}
 
         async findAll() {
                 return this.userModel.find();
@@ -42,11 +52,24 @@ export class UsersService {
         }
 
         async findAllParents() {
-                return await this.userModel
-                        .find({
-                                typeUser: 'paciente',
-                        })
+                const parents = await this.userModel
+                        .find({ typeUser: 'paciente' })
                         .select('-password');
+
+                const parentsWithCount = await Promise.all(
+                        parents.map(async (p: any) => {
+                                const count =
+                                        await this.childrenModel.countDocuments(
+                                                { parentId: p._id.toString() },
+                                        );
+                                return {
+                                        ...p.toObject(),
+                                        childrenCount: count,
+                                };
+                        }),
+                );
+
+                return parentsWithCount;
         }
 
         async findOne(id: string): Promise<User> {
@@ -61,7 +84,10 @@ export class UsersService {
                 return this.userModel.findOneAndDelete({ _id: id });
         }
 
-        async resetPassword(email: string, newPassword: string): Promise<boolean> {
+        async resetPassword(
+                email: string,
+                newPassword: string,
+        ): Promise<boolean> {
                 const user = await this.findOneByEmail(email);
                 if (!user) {
                         return false;
@@ -77,27 +103,38 @@ export class UsersService {
                 );
 
                 if (!user) {
-                        throw new UnauthorizedException('Las credenciales no son válidas.');
+                        throw new UnauthorizedException(
+                                'Las credenciales no son válidas.',
+                        );
                 }
 
-                const isValid = await bcrypt.compare(password.trim(), user.password);
+                const isValid = await bcrypt.compare(
+                        password.trim(),
+                        user.password,
+                );
 
                 if (!isValid) {
-                        throw new UnauthorizedException('Las credenciales no son válidas.');
+                        throw new UnauthorizedException(
+                                'Las credenciales no son válidas.',
+                        );
                 }
 
                 if (user.typeUser !== 'trabajador') {
-                        throw new ForbiddenException('Acceso denegado para pacientes.');
+                        throw new ForbiddenException(
+                                'Acceso denegado para pacientes.',
+                        );
                 }
 
                 delete user.password;
                 return user;
-        }//
+        }
 
         async updateUserById(id: string, updateUser: UpdateUserDto) {
                 const currentUser = await this.userModel.findById(id).exec();
                 if (!currentUser) {
-                        throw new NotFoundException(`User with ID ${id} not found`);
+                        throw new NotFoundException(
+                                `User with ID ${id} not found`,
+                        );
                 }
 
                 // Filtrar los campos proporcionados
@@ -111,14 +148,15 @@ export class UsersService {
                 // Eliminar el campo password si está presente
                 delete updates.password;
 
-                return this.userModel.findByIdAndUpdate(
-                        id,
-                        { $set: updates },
-                        {
-                                new: true,
-                                runValidators: true,
-                        },
-                ).exec();
+                return this.userModel
+                        .findByIdAndUpdate(
+                                id,
+                                { $set: updates },
+                                {
+                                        new: true,
+                                        runValidators: true,
+                                },
+                        )
+                        .exec();
         }
-
 }

@@ -118,7 +118,7 @@ const TabParent = ({ route, navigation }) => {
                                                                                         <View style={{ flex: 1, gap: 5 }}>
                                                                                                 <View style={{ flexDirection: 'row' }}>
                                                                                                         <Text style={{ fontWeight: 'bold' }}>Hijos: </Text>
-                                                                                                        <Text style={{ fontWeight: 'bold', color: '#48A2E2' }}>0</Text>
+                                                                                                        <Text style={{ fontWeight: 'bold', color: '#48A2E2' }}>{parent.childrenCount}</Text>
                                                                                                 </View>
                                                                                                 <View style={{ flexDirection: 'row' }}>
                                                                                                         <Text style={{ fontWeight: 'bold' }}>Estado: </Text>

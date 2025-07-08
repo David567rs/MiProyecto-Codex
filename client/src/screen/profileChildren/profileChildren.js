@@ -108,6 +108,13 @@ const ProfileChildren = ({ route, navigation }) => {
                         )}
                         <ListItem.Chevron color='#48A2E2' size={30} />
                     </ListItem>
+                     <ListItem onPress={() => navigation.navigate('childdevelopment', { children })} containerStyle={{ backgroundColor: 'transparent', paddingVertical: 5 }}>
+                        <Image source={require('../../../assets/icons/icons8-bebé-80.png')} style={{ width: 30, height: 30 }} />
+                        <ListItem.Content>
+                            <ListItem.Title>Desarrollo</ListItem.Title>
+                        </ListItem.Content>
+                        <ListItem.Chevron color='#48A2E2' size={30} />
+                    </ListItem>
                     <ListItem onPress={() => navigation.navigate('vaccinesChildren', { children })} containerStyle={{ backgroundColor: 'transparent', paddingVertical: 5 }}>
                         <Image source={require('../../../assets/icons/icons8-jeringa-64(1).png')} style={{ width: 30, height: 30 }} />
                         <ListItem.Content>

@@ -18,6 +18,7 @@ import { AuthModule } from './auth/auth.module';
 import { VaccineMonthModule } from './vaccine-month/vaccine-month.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { EmailsModule } from './emails/emails.module';
+import { DevelopmentModule } from './development/development.module';
 
 @Module({
         imports: [
@@ -38,6 +39,7 @@ import { EmailsModule } from './emails/emails.module';
                 VaccineMonthModule,
                 CloudinaryModule,
                 EmailsModule,
+                DevelopmentModule,
         ],
 })
 export class AppModule implements NestModule {

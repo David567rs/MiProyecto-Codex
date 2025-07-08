@@ -37,6 +37,7 @@ import CampaignDetails from '../screen/campaignDetails/campaignDetails'
 import VaccinationCalendar from '../screen/vaccinationCalendar/vaccinationCalendar'
 import AddChildren from '../screen/addChildren/addChildren'
 import vaccinesP from '../screen/vaccines/vaccinesP'
+import ChildDevelopment from '../screen/childDevelopment/childDevelopment'
 import vaccineListP from '../screen/vaccineList/vaccineListP'
 import VaccineDetailP from '../screen/vaccineDetail/vaccineDetailP'
 
@@ -901,7 +902,7 @@ const TabScreen = () => {
                                                                         color='#FFFFFF'
                                                                 />
                                                         }
-                                                        onPress={() => navigation.navigate('profilechildren')}
+                                                        onPress={() => navigation.navigate('profilechildren', { children: route.params?.children })}
                                                 />
                                         ),
                                         headerTitle: 'Datos personales',
@@ -963,7 +964,7 @@ const TabScreen = () => {
                                                                         color='#FFFFFF'
                                                                 />
                                                         }
-                                                        onPress={() => navigation.navigate('profilechildren')}
+                                                        onPress={() => navigation.navigate('profilechildren', { children: route.params?.children })}
                                                 />
                                         ),
                                         headerTitle: 'Salud',
@@ -994,10 +995,41 @@ const TabScreen = () => {
                                                                         color='#FFFFFF'
                                                                 />
                                                         }
-                                                        onPress={() => navigation.navigate('profilechildren')}
+                                                       onPress={() => navigation.navigate('profilechildren', { children: route.params?.children })}
                                                 />
                                         ),
                                         headerTitle: 'Nacimiento',
+                                        headerTitleAlign: 'center',
+                                        headerRight: () => (
+                                                <Image source={require('../../assets/MEDICAL-(Instagram Story).png')} style={{ width: 45, height: 45, marginRight: 5 }} />
+                                        ),
+                                        headerTintColor: '#FFFFFF',
+                                })}
+                        />
+                        <Tabs.Screen
+                                name='childdevelopment'
+                                component={ChildDevelopment}
+                                options={({ route, navigation }) => ({
+                                        title: null,
+                                        tabBarButton: () => null,
+                                        headerStyle: {
+                                                backgroundColor: '#48A2E2',
+                                        },
+                                        headerLeft: () => (
+                                                <Button
+                                                        color='transparent'
+                                                        icon={
+                                                                <Icon
+                                                                        type='ionicons'
+                                                                        name='arrow-back'
+                                                                        size={30}
+                                                                        color='#FFFFFF'
+                                                                />
+                                                        }
+                                                        onPress={() => navigation.navigate('profilechildren', { children: route.params?.children })}
+                                                />
+                                        ),
+                                        headerTitle: 'Desarrollo',
                                         headerTitleAlign: 'center',
                                         headerRight: () => (
                                                 <Image source={require('../../assets/MEDICAL-(Instagram Story).png')} style={{ width: 45, height: 45, marginRight: 5 }} />

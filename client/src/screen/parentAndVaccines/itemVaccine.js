@@ -63,17 +63,32 @@ const ItemVaccine = ({ m, children, deleteMonth = null }) => {
                 </View>
                 {deleteMonth != null && (
                     <View style={{ width: '100%', flexDirection: 'row', position: 'absolute', bottom: -35, left: 0, zIndex: 5, borderBottomEndRadius: 10, borderBottomStartRadius: 10 }}>
-                        <Button
-                            color='red'
-                            icon={<Icon type='antdesign' name='delete' size={20} color='#FFFFFF' />}
-                            containerStyle={{ paddingTop: 30, width: '50%', alignSelf: 'center', borderBottomLeftRadius: 10 }}
-                            onPress={() => deleteMonth(m._id.toString())}
-                        />
-                        <Button
-                            color='#48A2E2'
-                            icon={<Icon type='antdesign' name='edit' size={20} color='#FFFFFF' />}
-                            containerStyle={{ marginTop: 30, width: '50%', borderBottomRightRadius: 10 }}
-                        />
+                         <TouchableOpacity
+                              activeOpacity={0.7}
+                              style={{
+                                  paddingTop: 30,
+                                  width: '50%',
+                                  alignSelf: 'center',
+                                  alignItems: 'center',
+                                  backgroundColor: 'red',
+                                  borderBottomLeftRadius: 10,
+                              }}
+                              onPress={() => deleteMonth(m._id.toString())}
+                          >
+                              <Icon type='antdesign' name='delete' size={20} color='#FFFFFF' />
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                              activeOpacity={0.7}
+                              style={{
+                                  marginTop: 30,
+                                  width: '50%',
+                                  alignItems: 'center',
+                                  backgroundColor: '#48A2E2',
+                                  borderBottomRightRadius: 10,
+                              }}
+                          >
+                              <Icon type='antdesign' name='edit' size={20} color='#FFFFFF' />
+                          </TouchableOpacity>
                     </View>
                 )}
             </View>
