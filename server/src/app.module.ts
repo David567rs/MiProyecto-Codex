@@ -19,6 +19,9 @@ import { VaccineMonthModule } from './vaccine-month/vaccine-month.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { EmailsModule } from './emails/emails.module';
 import { DevelopmentModule } from './development/development.module';
+import { AgeControlModule } from './age-control/age-control.module';
+import { DetectionModule } from './detection/detection.module';
+import { AlarmSignsModule } from './alarm-signs/alarm-signs.module';
 
 @Module({
         imports: [
@@ -40,6 +43,9 @@ import { DevelopmentModule } from './development/development.module';
                 CloudinaryModule,
                 EmailsModule,
                 DevelopmentModule,
+                AgeControlModule,
+                DetectionModule,
+                AlarmSignsModule,
         ],
 })
 export class AppModule implements NestModule {

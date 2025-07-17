@@ -98,6 +98,12 @@ export class User {
         })
         password: string;
 
+        @Prop({ default: false })
+        isVerified: boolean;
+
+        @Prop()
+        verificationToken: string;
+
         @Prop({
                 type: String,
                 default: null,

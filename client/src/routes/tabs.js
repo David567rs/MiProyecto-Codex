@@ -38,8 +38,12 @@ import VaccinationCalendar from '../screen/vaccinationCalendar/vaccinationCalend
 import AddChildren from '../screen/addChildren/addChildren'
 import vaccinesP from '../screen/vaccines/vaccinesP'
 import ChildDevelopment from '../screen/childDevelopment/childDevelopment'
+import ChildAgeControl from '../screen/childDevelopment/childAgeControl'
+import EarlyDetection from '../screen/childDevelopment/earlyDetection'
 import vaccineListP from '../screen/vaccineList/vaccineListP'
 import VaccineDetailP from '../screen/vaccineDetail/vaccineDetailP'
+import SignosAlarma from '../screen/signosAlarma/signosAlarma'
+import CrianzaCarinosa from '../screen/childDevelopment/crianzaCarinosa'
 
 const Tabs = createBottomTabNavigator()
 
@@ -1223,6 +1227,134 @@ const TabScreen = () => {
                                         headerTintColor: '#FFFFFF',
                                 })}
                         />
+
+                        <Tabs.Screen
+                                name='childagecontrol'
+                                component={ChildAgeControl}
+                                options={({ route, navigation }) => ({
+                                        title: null,
+                                        tabBarButton: () => null,
+                                        headerStyle: {
+                                                backgroundColor: '#48A2E2',
+                                        },
+                                        headerLeft: () => (
+                                                <Button
+                                                        color='transparent'
+                                                        icon={
+                                                                <Icon
+                                                                        type='ionicons'
+                                                                        name='arrow-back'
+                                                                        size={30}
+                                                                        color='#FFFFFF'
+                                                                />
+                                                        }
+                                                        onPress={() => navigation.navigate('profilechildren', { children: route.params?.children })}
+                                                />
+                                        ),
+                                        headerTitle: 'Control por Edad',
+                                        headerTitleAlign: 'center',
+                                        headerRight: () => (
+                                                <Image source={require('../../assets/MEDICAL-(Instagram Story).png')} style={{ width: 45, height: 45, marginRight: 5 }} />
+                                        ),
+                                        headerTintColor: '#FFFFFF',
+                                })}
+                        />
+                        <Tabs.Screen
+                                name='detection'
+                                component={EarlyDetection}
+                                options={({ route, navigation }) => ({
+                                        title: null,
+                                        tabBarButton: () => null,
+                                        headerStyle: {
+                                                backgroundColor: '#48A2E2',
+                                        },
+                                        headerLeft: () => (
+                                                <Button
+                                                        color='transparent'
+                                                        icon={
+                                                                <Icon
+                                                                        type='ionicons'
+                                                                        name='arrow-back'
+                                                                        size={30}
+                                                                        color='#FFFFFF'
+                                                                />
+                                                        }
+                                                        onPress={() => navigation.navigate('profilechildren', { children: route.params?.children })}
+                                                />
+                                        ),
+                                        headerTitle: 'Detección',
+                                        headerTitleAlign: 'center',
+                                        headerRight: () => (
+                                                <Image source={require('../../assets/MEDICAL-(Instagram Story).png')} style={{ width: 45, height: 45, marginRight: 5 }} />
+                                        ),
+                                        headerTintColor: '#FFFFFF',
+                                })}
+                        />
+
+                        <Tabs.Screen
+                                name='alarmsigns'
+                                component={SignosAlarma}
+                                options={({ route, navigation }) => ({
+                                        title: null,
+                                        tabBarButton: () => null,
+                                        headerStyle: {
+                                                backgroundColor: '#48A2E2',
+                                        },
+                                        headerLeft: () => (
+                                                <Button
+                                                        color='transparent'
+                                                        icon={
+                                                                <Icon
+                                                                        type='ionicons'
+                                                                        name='arrow-back'
+                                                                        size={30}
+                                                                        color='#FFFFFF'
+                                                                />
+                                                        }
+                                                        onPress={() => navigation.navigate('profilechildren', { children: route.params?.children })}
+                                                />
+                                        ),
+                                        headerTitle: 'Signos de Alarma',
+                                        headerTitleAlign: 'center',
+                                        headerRight: () => (
+                                                <Image source={require('../../assets/MEDICAL-(Instagram Story).png')} style={{ width: 45, height: 45, marginRight: 5 }} />
+                                        ),
+                                        headerTintColor: '#FFFFFF',
+                                })}
+                        />
+
+                         <Tabs.Screen
+                                name='crianzacarinosa'
+                                component={CrianzaCarinosa}
+                                options={({ route, navigation }) => ({
+                                        title: null,
+                                        tabBarButton: () => null,
+                                        headerStyle: {
+                                                backgroundColor: '#48A2E2',
+                                        },
+                                        headerLeft: () => (
+                                                <Button
+                                                        color='transparent'
+                                                        icon={
+                                                                <Icon
+                                                                        type='ionicons'
+                                                                        name='arrow-back'
+                                                                        size={30}
+                                                                        color='#FFFFFF'
+                                                                />
+                                                        }
+                                                        onPress={() => navigation.navigate('profilechildren', { children: route.params?.children })}
+                                                />
+                                        ),
+                                        headerTitle: 'Crianza cariñosa',
+                                        headerTitleAlign: 'center',
+                                        headerRight: () => (
+                                                <Image source={require('../../assets/MEDICAL-(Instagram Story).png')} style={{ width: 45, height: 45, marginRight: 5 }} />
+                                        ),
+                                        headerTintColor: '#FFFFFF',
+                                })}
+                        />
+
                 </Tabs.Navigator>
         )
 }

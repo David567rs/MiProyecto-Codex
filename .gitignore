@@ -1,0 +1,37 @@
+# 🔁 General
+node_modules/
+dist/
+build/
+
+# ⚙️ Expo / React Native
+.expo/
+web-build/
+.expo-shared/
+*.jks
+*.keystore
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# ⚙️ NestJS o TypeScript (server)
+*.tsbuildinfo
+
+# 📦 Package manager debug files
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# 💻 Sistema y editores
+.DS_Store
+.vscode/
+.idea/
+
+# 🔐 Archivos de entorno
+.env
+.env*.local
+*.pem
+
+# 🧪 Tests (opcional)
+coverage/

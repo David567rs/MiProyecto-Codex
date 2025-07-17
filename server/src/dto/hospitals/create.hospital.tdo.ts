@@ -25,12 +25,12 @@ Numero: S/N
 
 */
 
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateHospitalDto {
         @IsOptional()
         images?: string[];
-        
+
         @IsString()
         @IsNotEmpty({
                 message: 'El nombre del hospital no puede estar vacio',
@@ -49,12 +49,12 @@ export class CreateHospitalDto {
         longitude: string;
         @IsString()
         latitude: string;
-        address:{
+        address: {
                 zipCode: string;
                 state: string;
                 city: string;
                 neighborhood: string;
                 street: string;
                 number: string;
-        }
+        };
 }

@@ -1,4 +1,4 @@
-import { IsString, IsArray, IsDate, IsOptional, IsNotEmpty } from 'class-validator';
+import { IsString, IsArray, IsOptional, IsNotEmpty } from 'class-validator';
 
 export class CreateVaccineDto {
         images: string[];
@@ -36,5 +36,3 @@ export class CreateVaccineDto {
         area: string[];
         appicationDate?: string;
 }
-
-

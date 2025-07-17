@@ -1,4 +1,3 @@
-
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({
@@ -38,6 +37,5 @@ export class Campaigns {
         @Prop()
         assignednurse: string[];
 }
-
 
 export const CampaignsSchema = SchemaFactory.createForClass(Campaigns);

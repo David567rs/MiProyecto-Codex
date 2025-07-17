@@ -11,74 +11,91 @@ import { Campaigns } from '../schemas/campaigns.schema';
 
 @Injectable()
 export class EmailsService {
-  private transporter: Transporter;
-  private email: string = 'emailvacunas@gmail.com';
-  private password: string = 'nlee bebk dsnh whke';
-  private generatedCodes: Map<string, { code: string, timestamp: number }> = new Map();
+        private transporter: Transporter;
+        private email: string = 'emailvacunas@gmail.com';
+        private password: string = 'nlee bebk dsnh whke';
+        private generatedCodes: Map<
+                string,
+                { code: string; timestamp: number }
+        > = new Map();
 
-  constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
-    @InjectModel(VaccineMonth.name) private vaccineMonthModel: Model<VaccineMonth>,
-    @InjectModel(Children.name) private childrenModel: Model<Children>,
-    @InjectModel(Vaccine.name) private vaccineModel: Model<Vaccine>,
-    @InjectModel(Campaigns.name) private CampaignsModel: Model<Campaigns>
-  ) {
-    this.transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: this.email,
-        pass: this.password,
-      },
-    });
-    setInterval(() => {
-      this.clearExpiredCodes();
-    }, 5 * 60 * 1000);
-  }
+        constructor(
+                @InjectModel(User.name) private userModel: Model<User>,
+                @InjectModel(VaccineMonth.name)
+                private vaccineMonthModel: Model<VaccineMonth>,
+                @InjectModel(Children.name)
+                private childrenModel: Model<Children>,
+                @InjectModel(Vaccine.name) private vaccineModel: Model<Vaccine>,
+                @InjectModel(Campaigns.name)
+                private CampaignsModel: Model<Campaigns>,
+        ) {
+                this.transporter = nodemailer.createTransport({
+                        service: 'gmail',
+                        auth: {
+                                user: this.email,
+                                pass: this.password,
+                        },
+                });
+                setInterval(
+                        () => {
+                                this.clearExpiredCodes();
+                        },
+                        5 * 60 * 1000,
+                );
+        }
 
-  private generateRandomCode(length: number): string {
-    const characters = '0123456789';
-    let result = '';
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  }
+        private generateRandomCode(length: number): string {
+                const characters = '0123456789';
+                let result = '';
+                const charactersLength = characters.length;
+                for (let i = 0; i < length; i++) {
+                        result += characters.charAt(
+                                Math.floor(Math.random() * charactersLength),
+                        );
+                }
+                return result;
+        }
 
-  async sendRecoveryCode(to: string) {
-    const user = await this.findOneByEmail(to);
-    if (!user) {
-      throw new NotFoundException('El correo electrónico no está registrado.');
-    }
+        async sendRecoveryCode(to: string) {
+                const user = await this.findOneByEmail(to);
+                if (!user) {
+                        throw new NotFoundException(
+                                'El correo electrónico no está registrado.',
+                        );
+                }
 
-    const code = this.generateRandomCode(4);
-    const timestamp = Date.now();
+                const code = this.generateRandomCode(4);
+                const timestamp = Date.now();
 
-    this.generatedCodes.set(to, { code, timestamp });
+                this.generatedCodes.set(to, { code, timestamp });
 
-    const mailOptions = {
-      from: `"Sistema de vacunas" <${this.email}>`,
-      to,
-      subject: 'Recuperación de contraseña, El código expira en un máximo de 5 minutos',
-      text: `Tu código de recuperación es: ${code}`,
-      html: `<p>Tu código de recuperación es: <strong>${code}</strong></p>`,
-    };
+                const mailOptions = {
+                        from: `"Sistema de vacunas" <${this.email}>`,
+                        to,
+                        subject: 'Recuperación de contraseña, El código expira en un máximo de 5 minutos',
+                        text: `Tu código de recuperación es: ${code}`,
+                        html: `<p>Tu código de recuperación es: <strong>${code}</strong></p>`,
+                };
 
-    try {
-      const info = await this.transporter.sendMail(mailOptions);
-      console.log('Correo enviado: %s', info.messageId);
-      return { success: true };
-    } catch (error) {
-      console.error('Error al enviar correo:', error);
-      throw error;
-    }
-  }
+                try {
+                        const info =
+                                await this.transporter.sendMail(mailOptions);
+                        console.log('Correo enviado: %s', info.messageId);
+                        return { success: true };
+                } catch (error) {
+                        console.error('Error al enviar correo:', error);
+                        throw error;
+                }
+        }
 
-  private clearExpiredCodes() {
-    const currentTime = Date.now();
-    for (const [email, { code, timestamp }] of this.generatedCodes.entries()) {
-      if (currentTime - timestamp > 5 * 60 * 1000) {
-        this.generatedCodes.delete(email);
+        private clearExpiredCodes() {
+                const currentTime = Date.now();
+                for (const [
+                        email,
+                        { timestamp },
+                ] of this.generatedCodes.entries()) {
+                        if (currentTime - timestamp > 5 * 60 * 1000) {
+                                this.generatedCodes.delete(email);
       }
     }
   }

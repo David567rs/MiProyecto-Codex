@@ -115,6 +115,34 @@ const ProfileChildren = ({ route, navigation }) => {
                         </ListItem.Content>
                         <ListItem.Chevron color='#48A2E2' size={30} />
                     </ListItem>
+                    <ListItem onPress={() => navigation.navigate('childagecontrol', { children })} containerStyle={{ backgroundColor: 'transparent', paddingVertical: 5 }}>
+                        <Image source={require('../../../assets/icons/icons8-opciones-para-ordenar-100.png')} style={{ width: 30, height: 30 }} />
+                        <ListItem.Content>
+                            <ListItem.Title>Control por Edad</ListItem.Title>
+                        </ListItem.Content>
+                        <ListItem.Chevron color='#48A2E2' size={30} />
+                    </ListItem>
+                    <ListItem onPress={() => navigation.navigate('detection', { children })} containerStyle={{ backgroundColor: 'transparent', paddingVertical: 5 }}>
+                        <Image source={require('../../../assets/icons/icons8-enfermedad-100.png')} style={{ width: 30, height: 30 }} />
+                        <ListItem.Content>
+                            <ListItem.Title>Detección temprana</ListItem.Title>
+                        </ListItem.Content>
+                        <ListItem.Chevron color='#48A2E2' size={30} />
+                    </ListItem>
+                    <ListItem onPress={() => navigation.navigate('alarmsigns', { children })} containerStyle={{ backgroundColor: 'transparent', paddingVertical: 5 }}>
+                        <Image source={require('../../../assets/icons/icons8-alarma-en-80.png')} style={{ width: 30, height: 30 }} />
+                        <ListItem.Content>
+                            <ListItem.Title>Signos de Alarma</ListItem.Title>
+                        </ListItem.Content>
+                        <ListItem.Chevron color='#48A2E2' size={30} />
+                    </ListItem>
+                    <ListItem onPress={() => navigation.navigate('crianzacarinosa', { children })} containerStyle={{ backgroundColor: 'transparent', paddingVertical: 5 }}>
+                        <Image source={require('../../../assets/icons/icons8-familia-hombre-mujer-100.png')} style={{ width: 30, height: 30 }} />
+                        <ListItem.Content>
+                            <ListItem.Title>Crianza cariñosa</ListItem.Title>
+                        </ListItem.Content>
+                        <ListItem.Chevron color='#48A2E2' size={30} />
+                    </ListItem>
                     <ListItem onPress={() => navigation.navigate('vaccinesChildren', { children })} containerStyle={{ backgroundColor: 'transparent', paddingVertical: 5 }}>
                         <Image source={require('../../../assets/icons/icons8-jeringa-64(1).png')} style={{ width: 30, height: 30 }} />
                         <ListItem.Content>

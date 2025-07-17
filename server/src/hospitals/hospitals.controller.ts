@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+        Body,
+        Controller,
+        Delete,
+        Get,
+        Param,
+        Post,
+        Put,
+} from '@nestjs/common';
 import { HospitalsService } from './hospitals.service';
 import { CreateHospitalDto } from '../dto/hospitals/create.hospital.tdo';
 
@@ -18,7 +26,6 @@ export class HospitalsController {
 
         @Post()
         async create(@Body() createHospital: CreateHospitalDto) {
-
                 return this.hospitalService.create(createHospital);
         }
 

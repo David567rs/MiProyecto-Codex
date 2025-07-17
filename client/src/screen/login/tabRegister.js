@@ -63,7 +63,13 @@ const TabRegister = ({ tabSelected, setTabSelected }) => {
         };
 
         const validateCURP = (curp) => {
-                const regex = /^[A-Z]{4}\d{6}[A-Z]{6}\d{2}$/;
+                //const regex = /^[A-Z]{4}\d{6}[A-Z]{6}\d{2}$/;
+                 // El formato de la CURP consta de 18 caracteres:
+                // 4 letras, 6 números que representan la fecha de nacimiento
+                // y 8 caracteres alfanuméricos correspondientes a entidad,
+                // género y homoclave. Permitimos cualquier combinación
+                // alfanumérica válida para los últimos 8 dígitos.
+                const regex = /^[A-Z]{4}\d{6}[A-Z0-9]{8}$/;
                 return regex.test(curp);
         };
 
@@ -83,7 +89,12 @@ const TabRegister = ({ tabSelected, setTabSelected }) => {
                         Alert.alert('El campo curp no es válido');
                         return;
                 }
-
+                
+                const validateTextField = (text) => {
+                const regex = /^[A-Za-z]+$/;
+                return regex.test(text);
+                };
+                
                 if (!formRegister.name) {
                         Alert.alert('El campo nombre es obligatorio');
                         return;
