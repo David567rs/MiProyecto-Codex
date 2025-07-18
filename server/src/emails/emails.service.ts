@@ -8,6 +8,7 @@ import { VaccineMonth } from '../schemas/vaccineMonth.schema';
 import { Vaccine } from '../schemas/vaccine.schema';
 import { Children } from '../schemas/children.schema';
 import { Campaigns } from '../schemas/campaigns.schema';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class EmailsService {
@@ -107,6 +108,45 @@ export class EmailsService {
       this.generatedCodes.delete(email);
     }
     return { isValid, receivedEmail: email, receivedCode: code };
+  }
+
+  async sendVerificationEmail(to: string) {
+    const user = await this.findOneByEmail(to);
+    if (!user) {
+      throw new NotFoundException('El correo electrónico no está registrado.');
+    }
+
+    const token = uuidv4();
+    user.verificationToken = token;
+    user.isVerified = false;
+    await user.save();
+
+    const verifyUrl = `http://localhost:3000/verify-email/${token}`;
+    const mailOptions = {
+      from: `"Sistema de vacunas" <${this.email}>`,
+      to,
+      subject: 'Verificación de correo electrónico',
+      html: `<p>Por favor confirma tu correo haciendo clic en el siguiente enlace:</p><p><a href="${verifyUrl}">${verifyUrl}</a></p>`,
+    };
+
+    try {
+      await this.transporter.sendMail(mailOptions);
+      return { success: true };
+    } catch (error) {
+      console.error('Error al enviar correo:', error);
+      throw error;
+    }
+  }
+
+  async verifyEmail(token: string): Promise<boolean> {
+    const user = await this.userModel.findOne({ verificationToken: token });
+    if (!user) {
+      return false;
+    }
+    user.isVerified = true;
+    user.verificationToken = null;
+    await user.save();
+    return true;
   }
 
   async findOneByEmail(email: string) {

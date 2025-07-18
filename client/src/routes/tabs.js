@@ -57,12 +57,16 @@ const TabScreen = () => {
                                 headerShown: true,
                                 tabBarStyle: {
                                         position: 'absolute',
-                                        backgroundColor: '#48A2E2',
-                                        bottom: 15,
-                                        marginRight: 15,
-                                        marginLeft: 15,
+                                        bottom: 25,                                
+                                        alignSelf: 'center',                      
+                                        height: 60,                                
                                         borderRadius: 30,
-                                        zIndex: 10
+                                        backgroundColor: '#48A2E2',
+                                        paddingHorizontal: 20,                     
+                                        paddingTop: 4,                            
+                                        paddingBottom: 5,                          
+                                        elevation: 5,                              
+                                        zIndex: 10,
                                 },
                                 tabBarShowLabel: false,
                         }}

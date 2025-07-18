@@ -4,11 +4,10 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  CheckBox,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { Button, Icon } from '@rneui/themed';
+import { CheckBox, Button, Icon } from '@rneui/themed';
 import { API_URL } from '../../utils/constants';
 
 const QUESTIONS = [
@@ -96,7 +95,11 @@ const EarlyDetection = ({ navigation, route }) => {
       <Text style={styles.title}>Detección Temprana de Enfermedades</Text>
       {QUESTIONS.map((q, i) => (
         <View key={i} style={styles.questionContainer}>
-          <CheckBox value={!!responses[i]} onValueChange={() => toggleResponse(i)} />
+          <CheckBox
+            checked={!!responses[i]}
+            onPress={() => toggleResponse(i)}
+            containerStyle={styles.checkbox}
+          />
           <Text style={styles.question}>{q}</Text>
         </View>
       ))}
@@ -122,19 +125,25 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 30,
+    alignItems: 'center',
   },
   questionContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
+    alignItems: 'flex-start',
+    marginBottom: 25,
   },
   question: {
-    marginLeft: 10,
+    marginLeft: 5,
     fontSize: 16,
     flex: 1,
+    flexWrap: 'wrap',
+  },
+  checkbox: {
+    padding: 0,
+    margin: 0,
   },
   subtitle: {
     marginTop: 20,

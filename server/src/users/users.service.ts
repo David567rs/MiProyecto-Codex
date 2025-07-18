@@ -11,6 +11,7 @@ import { CreateUserDto } from '../dto/users/create.users.dto';
 import { UpdateUserDto } from '../dto/users/update.users.dto';
 import { User } from '../schemas/user.schema';
 import * as bcrypt from 'bcryptjs';
+import { EmailsService } from '../emails/emails.service';
 
 @Injectable()
 export class UsersService {
@@ -18,6 +19,7 @@ export class UsersService {
                 @InjectModel(User.name) private userModel: Model<User>,
                 @InjectModel(Children.name)
                 private childrenModel: Model<Children>,
+                private emailsService: EmailsService,
         ) {}
 
         async findAll() {
@@ -31,7 +33,9 @@ export class UsersService {
                 );
                 createUser.email = createUser.email.toLowerCase();
                 const createdUser = new this.userModel(createUser);
-                return createdUser.save();
+                const user = await createdUser.save();
+                await this.emailsService.sendVerificationEmail(user.email);
+                return user;
         }
 
         async update(id: string, updateUser: any) {

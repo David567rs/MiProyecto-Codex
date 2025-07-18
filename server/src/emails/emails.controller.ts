@@ -1,4 +1,5 @@
-import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, HttpException, HttpStatus, Get, Param,Res } from '@nestjs/common';
+import { Response } from 'express';
 import { EmailsService } from './emails.service';
 
 @Controller('emails')
@@ -22,6 +23,24 @@ export class EmailsController {
     } else {
       return { success: false, email: result.receivedEmail, code: result.receivedCode };
     }
+  }
+
+  @Post('send-verification-email')
+  async sendVerification(@Body('email') email: string) {
+    try {
+      return await this.emailsService.sendVerificationEmail(email);
+    } catch (error) {
+      throw new HttpException('Error al enviar el correo', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Get('verify/:token')
+  async verify(@Param('token') token: string, @Res() res: Response) {
+    const ok = await this.emailsService.verifyEmail(token);
+    if (ok) {
+      return res.status(200).send('Correo verificado');
+    }
+    return res.status(400).send('Token inválido');
   }
 
   @Post('send-notification-email')

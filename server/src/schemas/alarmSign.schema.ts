@@ -3,17 +3,17 @@ import { Document } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class AlarmSign extends Document {
-  @Prop({ required: true })
-  childId: string;
+        @Prop({ required: true })
+        childId: string;
 
-  @Prop({ type: [String], default: [] })
-  signs: string[];
+        @Prop({ type: [String], default: [] })
+        signs: string[];
 
-  @Prop()
-  comments: string;
+        @Prop()
+        comments: string;
 
-  @Prop()
-  diagnosis: string;
+        @Prop()
+        diagnosis: string;
 }
 
 export const AlarmSignSchema = SchemaFactory.createForClass(AlarmSign);

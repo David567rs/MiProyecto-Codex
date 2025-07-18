@@ -6,10 +6,10 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  CheckBox,
+  
 } from 'react-native';
 import { API_URL } from '../../utils/constants';
-import { Button, Icon } from '@rneui/themed';
+import { Button, Icon, CheckBox } from '@rneui/themed';
 
 const EMPTY_ROW = { age: '', weight: '', height: '', notes: '', medicalCheck: false };
 

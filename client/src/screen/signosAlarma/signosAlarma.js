@@ -4,12 +4,12 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  CheckBox,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import { CheckBox, Button, Icon } from '@rneui/themed'
 import { API_URL } from '../../utils/constants';
-import { Button, Icon } from '@rneui/themed';
+
 
 const sintomas = [
   'No ha alcanzado logros previos según su edad',
@@ -99,8 +99,9 @@ const SignosAlarma = ({ navigation, route }) => {
       {sintomas.map((item, index) => (
         <View key={index} style={styles.checkboxContainer}>
           <CheckBox
-            value={!!seleccionados[item]}
-            onValueChange={() => alternarSintoma(item)}
+             checked={!!seleccionados[item]}
+            onPress={() => alternarSintoma(item)}
+            containerStyle={styles.checkbox}
           />
           <Text style={styles.label}>{item}</Text>
         </View>
@@ -144,16 +145,22 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 15,
+    marginBottom: 35,
   },
   checkboxContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
+    alignItems: 'flex-start',
+    marginBottom: 20,
+  },
+  checkbox: {
+    padding: 0,
+    margin: 0,
   },
   label: {
-    marginLeft: 10,
+    marginLeft: 5,
     fontSize: 16,
+    flex: 1,
+    flexWrap: 'wrap',
   },
   subtitle: {
     marginTop: 20,
