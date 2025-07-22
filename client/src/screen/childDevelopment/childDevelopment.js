@@ -7,20 +7,100 @@ const developmentData = [
   {
     age: '1 mes',
     questions: [
-      '¿Puede voltear su cabeza hacia los dos?',
-      '¿Hace sonidos con la boca?',
-      '¿Se ríe cuando juegas?'
-    ]
+      '¿Puede voltear su cabeza para los dos lados cuando está boca abajo?',
+      '¿Llora o hace ruido al estar incómoda(o) o querer comer?',
+      '¿Se tranquiliza al hablarle o levantarla(o)?',
+    ],
   },
   {
     age: '3 meses',
     questions: [
-      '¿Levanta la cabeza cuando está boca abajo?',
-      '¿Sigue con la mirada objetos en movimiento?',
-      '¿Responde a sonidos fuertes?'
-    ]
-  }
-]
+      '¿Logra sostener la cabeza?',
+      '¿Hace sonidos con la boca o sonríe?',
+      '¿Responde cuando juegan juntos?',
+    ],
+  },
+  {
+    age: '6 meses',
+    questions: [
+      '¿Se mantiene sentada(o), aunque sea apoyándose en sus manos?',
+      '¿Imita sonidos como “le, be, pa, gu”?',
+      '¿Se ríe cuando juegas a taparte y destaparte la cara?',
+    ],
+  },
+  {
+    age: '12 meses',
+    questions: [
+      '¿Puede caminar agarrado de muebles?',
+      '¿Cuándo está entretenida(o) y se le dice “NO” reacciona?',
+      '¿Empieza a comer por sí sola(o)?',
+    ],
+  },
+  {
+    age: '18 meses',
+    questions: [
+      '¿Camina sola(o)?',
+      '¿Dice cuatro palabras, además de mamá o papá?',
+      '¿Imita tareas sencillas de casa, como: barrer o limpiar?',
+    ],
+  },
+  {
+    age: '2 años',
+    questions: [
+      '¿Puede subirse sola(o) a las sillas, sillones, camas?',
+      '¿Obedece órdenes sencillas, como “dame la pelota”?',
+      '¿Hace intentos por ser independiente? (lavarse las manos, vestirse)',
+    ],
+  },
+  {
+    age: '3 años',
+    questions: [
+      '¿Juega con otras niñas o niños?',
+      '¿Conoce los nombres de al menos cuatro colores?',
+      '¿Puede dibujar un círculo o una cruz?',
+      '¿Frecuentemente pregunta “por qué”?',
+    ],
+  },
+  {
+    age: '4 años',
+    questions: [
+      '¿Puede ir sola(o) al baño?',
+      '¿Puede contar hasta el número 10?',
+      '¿Puede dibujar una persona con una o más partes del cuerpo?',
+      '¿Pide “más” cuando algo le gusta mucho?',
+    ],
+  },
+  {
+    age: '5 años',
+    questions: [
+      '¿Le gusta ir a la escuela?',
+      '¿Puede escribir dos números o letras?',
+      '¿Puede brincar hacia atrás con los pies juntos?',
+      '¿Comunica sus emociones cuando está “feliz, triste o enojado”?',
+    ],
+  },
+  {
+    age: '6 años',
+    questions: [
+      '¿Puede seguir las reglas de juegos sencillos?',
+      '¿Lee por lo menos 10 palabras en voz alta?',
+    ],
+  },
+  {
+    age: '7 años',
+    questions: [
+      '¿Se integra en juegos que requieren mantener puntaje?',
+      '¿Enlista palabras en orden alfabético?',
+    ],
+  },
+  {
+    age: '8 años',
+    questions: [
+      '¿Se disculpa después de lastimar los sentimientos de otras personas?',
+      '¿Escribe oraciones sencillas de 3 o 4 palabras?',
+    ],
+  },
+];
 
 const ChildDevelopment = ({ navigation, route }) => {
   const { children } = route.params
@@ -52,10 +132,17 @@ const ChildDevelopment = ({ navigation, route }) => {
     developmentData.map((block, bIndex) => ({
       ageBlock: block.age,
       milestones: block.questions.map((q, qIndex) => ({
+        area: getAreaForQuestion(bIndex, qIndex),
         question: q,
         value: !!state[`${bIndex}-${qIndex}`],
       })),
     }))
+
+  const getAreaForQuestion = (blockIndex, questionIndex) => {
+    // Simple logic to assign areas based on question index
+    const areas = ['Motor', 'Lenguaje', 'Social', 'Conocimiento']
+    return areas[questionIndex % areas.length]
+  }
 
   useEffect(() => {
     const loadData = async () => {
