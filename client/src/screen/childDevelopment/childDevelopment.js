@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { CheckBox, Button, Icon } from '@rneui/themed'
 import { API_URL } from '../../utils/constants'
 
+// developmentData alineado con la Cartilla Nacional de Salud (0 a 9 años)
 const developmentData = [
   {
     age: '1 mes',
@@ -55,49 +56,55 @@ const developmentData = [
   {
     age: '3 años',
     questions: [
-      '¿Juega con otras niñas o niños?',
-      '¿Conoce los nombres de al menos cuatro colores?',
-      '¿Puede dibujar un círculo o una cruz?',
-      '¿Frecuentemente pregunta “por qué”?',
+      '¿Sube escaleras alternando los pies?',
+      '¿Mantiene una conversación corta?',
+      '¿Comparte sus juguetes?',
+      '¿Identifica colores básicos?',
     ],
   },
   {
     age: '4 años',
     questions: [
-      '¿Puede ir sola(o) al baño?',
-      '¿Puede contar hasta el número 10?',
-      '¿Puede dibujar una persona con una o más partes del cuerpo?',
-      '¿Pide “más” cuando algo le gusta mucho?',
+      '¿Salta en un pie?',
+      '¿Cuenta historias sencillas?',
+      '¿Juega de forma cooperativa?',
+      '¿Reconoce algunas letras?',
     ],
   },
   {
     age: '5 años',
     questions: [
-      '¿Le gusta ir a la escuela?',
-      '¿Puede escribir dos números o letras?',
-      '¿Puede brincar hacia atrás con los pies juntos?',
-      '¿Comunica sus emociones cuando está “feliz, triste o enojado”?',
+      '¿Maneja triciclo o bicicleta con ruedas de apoyo?',
+      '¿Habla claramente la mayor parte del tiempo?',
+      '¿Sigue reglas simples en juegos?',
+      '¿Cuenta hasta el número 10?',
     ],
   },
   {
     age: '6 años',
     questions: [
-      '¿Puede seguir las reglas de juegos sencillos?',
-      '¿Lee por lo menos 10 palabras en voz alta?',
+      '¿Se viste sin ayuda?',
+      '¿Lee palabras sencillas?',
+      '¿Trabaja en equipo con otros niños?',
+      '¿Suma y resta números pequeños?',
     ],
   },
   {
     age: '7 años',
     questions: [
-      '¿Se integra en juegos que requieren mantener puntaje?',
-      '¿Enlista palabras en orden alfabético?',
+      '¿Escribe con letra clara?',
+      '¿Explica sus ideas con claridad?',
+      '¿Participa en actividades deportivas o artísticas?',
+      '¿Comprende reglas básicas de juego?',
     ],
   },
   {
     age: '8 años',
     questions: [
-      '¿Se disculpa después de lastimar los sentimientos de otras personas?',
+      '¿Coordina movimientos complejos al jugar?',
       '¿Escribe oraciones sencillas de 3 o 4 palabras?',
+      '¿Muestra empatía hacia los demás?',
+      '¿Resuelve problemas matemáticos simples?',
     ],
   },
 ];
@@ -139,7 +146,6 @@ const ChildDevelopment = ({ navigation, route }) => {
     }))
 
   const getAreaForQuestion = (blockIndex, questionIndex) => {
-    // Simple logic to assign areas based on question index
     const areas = ['Motor', 'Lenguaje', 'Social', 'Conocimiento']
     return areas[questionIndex % areas.length]
   }
