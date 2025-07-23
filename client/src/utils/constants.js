@@ -1,4 +1,4 @@
-export const API_URL = 'http://172.31.99.83:3000'
+export const API_URL = 'http://192.168.1.21:3000'
 
 //export const API_URL = 'https://vaccinationapi.vercel.app';
 

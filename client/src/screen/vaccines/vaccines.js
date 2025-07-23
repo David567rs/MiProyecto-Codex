@@ -73,7 +73,7 @@ const Vaccines = ({ route, navigation }) => {
     }, [month, buttonSelected]);
 
     return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 80 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 100 }}>
             <View style={{ width: '100%' }}>
                 <View style={{ width: '100%', justifyContent: 'space-between', flexDirection: 'row' }}>
                     <Button

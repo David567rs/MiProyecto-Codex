@@ -34,7 +34,7 @@ const Home = () => {
         }
 
         return (
-                <ScrollView contentContainerStyle={{ flexGrow: 1,  alignItems: 'center', paddingBottom: 80 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1,  alignItems: 'center', paddingBottom: 100 }}>
                         <View style={{ width: '100%', alignItems: 'center', height: (width / 2) - 45, marginTop: 10 ,padding: 10}}>
                                 <View style={{ width: '100%', overflow: 'hidden', height: (width / 2) - 70, alignItems: 'center', borderRadius: 10 }}>
                                         <Carousel

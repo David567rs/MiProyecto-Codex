@@ -140,7 +140,7 @@ const AddMonth = ({ route, navigation }) => {
         }
 
         return (
-                <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 80, backgroundColor: '#D8EFEF' }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 100, backgroundColor: '#D8EFEF' }}>
                         <View style={{
                                 width: '95%',
                                 backgroundColor: '#FFFFFF',

@@ -11,7 +11,7 @@ const VaccinationCalendar = () => {
         }, [])
 
         return (
-                <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 80 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 100 }}>
                         <ScrollView
                                 horizontal={true}
                                 showsHorizontalScrollIndicator={false}

@@ -36,7 +36,7 @@ const Sliders = ({route,navigation}) => {
         }
 
         return (
-                <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 80 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 100 }}>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Imagenes</Text>
                         <Button 
                                 onPress={()=> navigation.navigate('addslider')}

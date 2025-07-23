@@ -7,7 +7,7 @@ const NotifySettings = () => {
 
         const [checked, setChecked] = useState(false)
         return (
-                <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 80 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 100 }}>
                         <View style={{
                                 width: '95%', alignItems: 'center', backgroundColor: '#FFFFFF', shadowColor: "#000",
                                 shadowOffset: {

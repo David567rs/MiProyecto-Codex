@@ -21,7 +21,7 @@ const Hospitals = ({ route, navigation }) => {
         }, [navigation])
 
         return (
-                <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 80 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 100 }}>
                         <Button
                                 title='Agregar'
                                 iconPosition='right'

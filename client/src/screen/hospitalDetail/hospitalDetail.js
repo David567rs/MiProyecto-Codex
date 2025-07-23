@@ -19,7 +19,7 @@ const HospitalDetail = ({ route, navigation }) => {
         }
 
         return (
-                <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', paddingBottom: 80 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', paddingBottom: 100 }}>
                         <View style={{ width: '100%', aspectRatio: 1 / 1 }}>
                                 {hospital?.images?.length > 0 ? (
                                         <Image

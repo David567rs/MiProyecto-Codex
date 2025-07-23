@@ -44,7 +44,7 @@ const Entercode = ({ navigation, route }) => {
                 padding: 10,
                 elevation: 2,
             }}>
-                <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 80 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 100 }}>
                     <View style={{ width: '100%', alignItems: 'center' }}>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', padding: 10 }}>Ingresa el código</Text>
                         <Image source={require('../../../assets/icons/LLave.png')} style={{ width: 130, height: 130 }} />

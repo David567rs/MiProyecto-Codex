@@ -30,7 +30,7 @@ const Notifications = ({ route, navigation }) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 80 }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 100 }}>
       <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Notifications</Text>
       <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
         <Button

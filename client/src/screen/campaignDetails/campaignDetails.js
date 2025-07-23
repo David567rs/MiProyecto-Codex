@@ -28,7 +28,7 @@ const CampaignDetails = ({ route, navigation }) => {
 
 
         return (
-                <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', paddingBottom: 80 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', paddingBottom: 100 }}>
                         <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center', aspectRatio: 1 }}>
                                 {images?.length === 0 ? (
                                         <NoImgVaccineIcon size={150} />

@@ -11,7 +11,7 @@ const Profession = ({ route, navigation }) => {
 
         return (
                 <>
-                        <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 80 }}>
+                        <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10, alignItems: 'center', paddingBottom: 100 }}>
                                 <View style={{
                                         width: '95%', backgroundColor: '#FFFFFF', shadowColor: "#000",
                                         shadowOffset: {
