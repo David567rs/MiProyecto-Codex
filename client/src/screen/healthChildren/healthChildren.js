@@ -19,7 +19,7 @@ const HealthChildren = ({ route, navigation }) => {
 
         useEffect(() => {
                 setFormChildren(children)
-        }, [])
+        }, [children])
 
         useEffect(() => {
                 navigation.setOptions({
@@ -34,11 +34,11 @@ const HealthChildren = ({ route, navigation }) => {
                                                         color='#FFFFFF'
                                                 />
                                         }
-                                        onPress={() => navigation.navigate(session?.typeUser == 'trabajador' ? 'profilechildren' : 'children', { children })}
+                                        onPress={() => navigation.navigate(session?.typeUser === 'trabajador' ? 'profilechildren' : 'children', { children })}
                                 />
                         ),
                 })
-        }, [])
+        }, [children])
 
         return (
                 <>

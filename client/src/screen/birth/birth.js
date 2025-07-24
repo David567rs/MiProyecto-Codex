@@ -105,7 +105,7 @@ const Birth = ({ route, navigation }) => {
                                                                 <Image source={require('../../../assets/icons/icons8-parte-delantera-de-tarjeta-bancaria-100.png')} style={{ width: 30, height: 30 }} />
                                                                 <ListItem.Content>
                                                                         <ListItem.Title>Colonia</ListItem.Title>
-                                                                        <ListItem.Subtitle style={{ color: '#48A2E2' }}>{children?.colony}</ListItem.Subtitle>
+                                                                        <ListItem.Subtitle style={{ color: '#48A2E2' }}>{children?.neighborhood}</ListItem.Subtitle>
                                                                 </ListItem.Content>
                                                         </ListItem>
                                                         <ListItem onPress={() => console.log("console")} containerStyle={{ paddingVertical: 5, width: width / 2 - 20 }}>

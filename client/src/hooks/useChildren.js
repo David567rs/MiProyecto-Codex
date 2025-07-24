@@ -40,7 +40,7 @@ const useChildren = (navigation = null) => {
                                 return
                         }
 
-                        if (formChildren.fatherSurname == "") {
+                        if (formChildren.lastName == "") {
                                 Alert.alert('El campo apellido paterno es obligatorio')
                                 return
                         }

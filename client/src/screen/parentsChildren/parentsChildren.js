@@ -71,7 +71,7 @@ const ParentsChildren = ({ route, navigation }) => {
                                                 textStyle={{ color: '#48A2E2' }}
                                                 containerStyle={{ marginBottom: 20, gap: 10, backgroundColor: 'transparent', borderWidth: 0 }}
                                                 selectedIndex={0}
-                                                onPress={(value) => console.log(value)}
+                                                onPress={(value) => navigation.navigate('profilechildren', { children })}       
                                         />
                                 </View>
                         </View>
@@ -79,8 +79,8 @@ const ParentsChildren = ({ route, navigation }) => {
                                 {children.length === 0 ? (
                                         <Text>No hay niños</Text>
                                 ) : (
-                                        children.map((ch, index) =>
-                                                <Card key={index} navigation={navigation} children={ch} />
+                                        children.map((ch) =>
+                                                <Card key={ch._id} navigation={navigation} children={ch} />
                                         )
                                 )}
                         </View>
