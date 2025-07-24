@@ -118,7 +118,7 @@ const TabParent = ({ route, navigation }) => {
                                                                                 backgroundColor: '#FFFFFF',
                                                                         }}>
                                                                         <View style={{ flex: 1, aspectRatio: 1 / 1, alignItems: 'center', justifyContent: 'center' }}>
-                                                                                <Text>Sin Imagen</Text>
+                                                                        <Image source={parent.image ? { uri: parent.image } : require('../../../assets/icons/user.png')} style={{ width: 80, height: 80, borderRadius: 40 }} />
                                                                         </View>
                                                                         <View style={{ flex: 2, gap: 5 }}>
                                                                                 <Text style={{ fontWeight: 'bold' }}>{parent.name} {parent.lastName} {parent.motherLastName}</Text>

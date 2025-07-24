@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useEffect, useState } from "react";
-import { API_URL } from "../utils/constants";
+import { API_URL, CLOUDINARY_URL } from "../utils/constants";
 import { Alert } from "react-native";
 
 const GlobalContext = createContext();
@@ -101,6 +101,54 @@ const GlobalProvider = ({ children }) => {
                         setLoading(false)
                 }
         }
+        const updateProfileImage = async (image) => {
+                try {
+                        setLoading(true)
+                        const formData = new FormData()
+                        formData.append('file', {
+                                uri: image.uri,
+                                type: image.mimeType || 'image/jpeg',
+                                name: image.fileName || 'profile.jpg'
+                        })
+
+                        const uploadResponse = await fetch(`${API_URL}/upload`, {
+                                method: 'POST',
+                                body: formData
+                        })
+
+                        const uploadResult = await uploadResponse.json()
+                        if (uploadResult.error) {
+                                Alert.alert('Error', 'No se pudo subir la imagen')
+                                return
+                        }
+
+                        const imageUrl = `${CLOUDINARY_URL}/${uploadResult.public_id}`
+
+                        const response = await fetch(`${API_URL}/users/${session._id}`, {
+                                method: 'PUT',
+                                headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${session.token}`
+                                },
+                                body: JSON.stringify({ image: imageUrl })
+                        })
+
+                        const result = await response.json()
+                        if (result.error) {
+                                Alert.alert('Error', result.message.toString())
+                                return
+                        }
+
+                        delete result.password
+                        AsyncStorage.setItem('session', JSON.stringify(result))
+                        setSession(result)
+                        Alert.alert('Foto de perfil actualizada')
+                } catch (e) {
+                        console.log(e)
+                } finally {
+                        setLoading(false)
+                }
+        }
 
         const verifySession = async () => {
                 try {
@@ -131,6 +179,7 @@ const GlobalProvider = ({ children }) => {
                 verifySession,
                 onChangeUser,
                 updateUser,
+                updateProfileImage,
                 activeModal,
                 setActiveModal,
                 activeModal2,
