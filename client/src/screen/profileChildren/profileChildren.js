@@ -125,14 +125,7 @@ const ProfileChildren = ({ route, navigation }) => {
                     <ListItem onPress={() => navigation.navigate('detection', { children })} containerStyle={{ backgroundColor: 'transparent', paddingVertical: 5 }}>
                         <Image source={require('../../../assets/icons/icons8-enfermedad-100.png')} style={{ width: 30, height: 30 }} />
                         <ListItem.Content>
-                            <ListItem.Title>Detección temprana</ListItem.Title>
-                        </ListItem.Content>
-                        <ListItem.Chevron color='#48A2E2' size={30} />
-                    </ListItem>
-                    <ListItem onPress={() => navigation.navigate('alarmsigns', { children })} containerStyle={{ backgroundColor: 'transparent', paddingVertical: 5 }}>
-                        <Image source={require('../../../assets/icons/icons8-alarma-en-80.png')} style={{ width: 30, height: 30 }} />
-                        <ListItem.Content>
-                            <ListItem.Title>Signos de Alarma</ListItem.Title>
+                        <ListItem.Title>Detección de enfermedades</ListItem.Title>
                         </ListItem.Content>
                         <ListItem.Chevron color='#48A2E2' size={30} />
                     </ListItem>
