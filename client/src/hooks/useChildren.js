@@ -1,6 +1,7 @@
 import { View, Text, Alert } from 'react-native'
 import React, { useState } from 'react'
-import { API_URL } from '../utils/constants'
+import * as ImagePicker from 'expo-image-picker'
+import { API_URL, CLOUDINARY_URL } from '../utils/constants'
 
 const useChildren = (navigation = null) => {
 
@@ -104,6 +105,52 @@ const useChildren = (navigation = null) => {
                 }
         }
 
+        const updateChildrenImage = async (id, image) => {
+                try {
+                        setLoading(true)
+
+                        const formData = new FormData()
+                        formData.append('file', {
+                                uri: image.uri,
+                                type: image.mimeType || 'image/jpeg',
+                                name: image.fileName || 'child.jpg'
+                        })
+
+                        const uploadRes = await fetch(`${API_URL}/upload`, {
+                                method: 'POST',
+                                body: formData
+                        })
+
+                        const uploadData = await uploadRes.json()
+                        if (uploadData.error) {
+                                Alert.alert('Error', 'No se pudo subir la imagen')
+                                return
+                        }
+
+                        const imageUrl = `${CLOUDINARY_URL}/${uploadData.public_id}`
+
+                        const response = await fetch(`${API_URL}/children/${id}`, {
+                                method: 'PUT',
+                                headers: {
+                                        'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ image: imageUrl })
+                        })
+
+                        const data = await response.json()
+                        if (data.error) {
+                                Alert.alert('Error', data.message?.toString() || 'Error')
+                                return
+                        }
+                        setFormChildren(data)
+                        navigation?.setParams({ children: data })
+                } catch (e) {
+                        console.log(e)
+                } finally {
+                        setLoading(false)
+                }
+        }
+
         return {
                 getChildren,
                 children,
@@ -112,6 +159,7 @@ const useChildren = (navigation = null) => {
                 updateChildren,
                 formChildren,
                 setFormChildren,
+                updateChildrenImage,
                 activeModal,
                 setActiveModal
         }

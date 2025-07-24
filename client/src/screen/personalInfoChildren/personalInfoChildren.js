@@ -1,6 +1,7 @@
 import { View, Text, ScrollView } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Icon, Image } from '@rneui/themed'
+import * as ImagePicker from 'expo-image-picker'
 import { ListItem } from '@rneui/base'
 import { GlobalContext } from '../../contexts/globalContext'
 import UpdatePersonalInfo from './updatePersonalInfo'
@@ -10,10 +11,34 @@ const PersonalInfoChildren = ({ route, navigation }) => {
 
         const { session } = useContext(GlobalContext)
         const { children } = route.params
-        const { updateChildren, formChildren, setFormChildren, setActiveModal, activeModal } = useChildren(navigation)
+        const {
+                updateChildren,
+                updateChildrenImage,
+                formChildren,
+                setFormChildren,
+                setActiveModal,
+                activeModal,
+        } = useChildren(navigation)
 
         const closeModal = () => {
                 setActiveModal(false)
+        }
+
+        const selectImage = async () => {
+                try {
+                        const result = await ImagePicker.launchImageLibraryAsync({
+                                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                                allowsEditing: true,
+                                aspect: [1, 1],
+                                quality: 1,
+                        })
+
+                        if (!result.canceled) {
+                                await updateChildrenImage(children._id, result.assets[0])
+                        }
+                } catch (e) {
+                        console.log(e)
+                }
         }
 
         useEffect(() => {
@@ -58,12 +83,18 @@ const PersonalInfoChildren = ({ route, navigation }) => {
                                         marginTop: 10
                                 }}>
                                         <Text style={{ fontWeight: 'bold', fontSize: 18, paddingVertical: 5 }}>Datos Personales</Text>
-                                        <View>
+                                        <View style={{ alignItems: 'center' }}>
                                                 {children?.image && children?.image !== "" ? (
                                                         <Image source={{ uri: children.image }} style={{ width: 150, height: 150, borderRadius: 75 }} />
                                                 ) : (
                                                         <Text style={{ width: 150, height: 150, borderWidth: 1, borderRadius: 75, borderColor: '#48A2E2' }}></Text>
                                                 )}
+                                                 <Button
+                                                        title='Cambiar foto'
+                                                        type='outline'
+                                                        onPress={selectImage}
+                                                        containerStyle={{ marginTop: 10 }}
+                                                />
                                         </View>
                                         <Text style={{ fontSize: 16, fontWeight: 'bold', marginTop: 10 }}>{children?.name} {children?.lastName} {children?.secondLastName}</Text>
                                         <Text style={{ color: '#48A2E2' }}>{children?.curp}</Text>
