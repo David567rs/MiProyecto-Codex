@@ -1,5 +1,7 @@
 import { View, Text, ScrollView, Image, ActivityIndicator, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Button, ButtonGroup, SearchBar, TabView } from '@rneui/base'
 import useParent from '../../hooks/useParent'
 
@@ -21,9 +23,15 @@ const TabParent = ({ route, navigation }) => {
 
         const nameFilter = ['Todo', 'Nombre', 'Hijos', 'Completo']
 
+        const tabBarHeight = useBottomTabBarHeight()
+        const { bottom } = useSafeAreaInsets()
+
         return (
                 <TabView.Item style={{ width: '100%' }}>
-                        <ScrollView keyboardDismissMode='interactive'>
+                        <ScrollView
+                                keyboardDismissMode='interactive'
+                                contentContainerStyle={{ paddingBottom: tabBarHeight + bottom }}
+                        >
                                 <View style={{ width: '100%', padding: 10 }}>
                                         <SearchBar
                                                 placeholder='Buscar'
