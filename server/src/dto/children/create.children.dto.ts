@@ -27,6 +27,9 @@ export class CreateChildrenDto {
 
         @IsOptional()
         age: number;
+        
+        @IsOptional()
+        ageUnit: string;
 
         @IsOptional()
         gender: string;

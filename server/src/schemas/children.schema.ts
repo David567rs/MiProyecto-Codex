@@ -45,6 +45,9 @@ export class Children extends Document {
         age: number;
 
         @Prop()
+        ageUnit: string;
+
+        @Prop()
         gender: string;
 
         @Prop()

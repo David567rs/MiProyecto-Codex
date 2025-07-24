@@ -33,7 +33,7 @@ const Card = ({ navigation, children = {} }) => {
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                                 <View style={{ flexDirection: 'row' }}>
                                                         <Text style={{ fontSize: 15 }}>Edad: </Text>
-                                                        <Text style={{ fontSize: 15, color: '#48A2E2' }}>{children?.age}</Text>
+                                                        <Text style={{ fontSize: 15, color: '#48A2E2' }}>{children?.age} {children?.ageUnit}</Text>
                                                 </View>
                                                 <Image source={require('../../../assets/icons/icons8-de-acuerdo-96.png')} style={{ width: 25, height: 25 }} />
                                         </View>

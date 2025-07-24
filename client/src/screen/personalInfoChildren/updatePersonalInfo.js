@@ -1,7 +1,7 @@
 import { View, Text, ScrollView } from 'react-native'
 import React from 'react'
 import { Overlay } from '@rneui/base'
-import { Button, Input } from '@rneui/themed'
+import { Button, Input, CheckBox } from '@rneui/themed'
 
 const UpdatePersonalInfo = ({ activeModal, closeModal, formChildren, setFormChildren, updateChildren }) => {
 
@@ -152,6 +152,24 @@ const UpdatePersonalInfo = ({ activeModal, closeModal, formChildren, setFormChil
                                                                 borderColor: 0
                                                         }}
                                                 />
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                        <CheckBox
+                                                                title='Años'
+                                                                checked={formChildren.ageUnit === 'años'}
+                                                                onPress={() => setFormChildren({ ...formChildren, ageUnit: 'años' })}
+                                                                checkedIcon="dot-circle-o"
+                                                                uncheckedIcon="circle-o"
+                                                                iconRight
+                                                        />
+                                                        <CheckBox
+                                                                title='Meses'
+                                                                checked={formChildren.ageUnit === 'meses'}
+                                                                onPress={() => setFormChildren({ ...formChildren, ageUnit: 'meses' })}
+                                                                checkedIcon="dot-circle-o"
+                                                                uncheckedIcon="circle-o"
+                                                                iconRight
+                                                        />
+                                                </View>
                                         </View>
                                         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                                                 <Button

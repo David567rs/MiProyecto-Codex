@@ -138,7 +138,7 @@ const PersonalInfoChildren = ({ route, navigation }) => {
                                                         <Image source={require('../../../assets/icons/icons8-pastel-100.png')} style={{ width: 30, height: 30 }} />
                                                         <ListItem.Content>
                                                                 <ListItem.Title>Edad</ListItem.Title>
-                                                                <ListItem.Subtitle style={{ color: '#48A2E2' }}>{children?.age}</ListItem.Subtitle>
+                                                                <ListItem.Subtitle style={{ color: '#48A2E2' }}>{children?.age} {children?.ageUnit}</ListItem.Subtitle>
                                                         </ListItem.Content>
                                                 </ListItem>
                                                 <View style={{ width: '100%', alignItems: 'center', padding: 10 }}>

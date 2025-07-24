@@ -65,6 +65,11 @@ const useChildren = (navigation = null) => {
                                 return
                         }
 
+                        if (!formChildren.ageUnit) {
+                                Alert.alert('Debe especificar si la edad es en años o meses')
+                                return
+                        }
+
                 }
 
                 if (screen == 3) {
