@@ -59,7 +59,7 @@ const PersonalInfoChildren = ({ route, navigation }) => {
                                                         color='#FFFFFF'
                                                 />
                                         }
-                                        onPress={() => navigation.navigate(session?.typeUser === 'trabajador' ? 'profilechildren' : 'children', { children })}
+                                        onPress={() => navigation.navigate('profilechildren', { children })}
                                 />
                         ),
                 })
