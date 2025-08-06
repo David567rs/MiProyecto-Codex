@@ -33,6 +33,7 @@ export class UsersService {
                 );
                 createUser.email = createUser.email.toLowerCase();
                 const createdUser = new this.userModel(createUser);
+                //return createdUser.save();
                 const user = await createdUser.save();
                 await this.emailsService.sendVerificationEmail(user.email);
                 return user;

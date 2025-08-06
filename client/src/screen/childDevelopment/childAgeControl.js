@@ -83,30 +83,37 @@ const ChildAgeControl = ({ navigation, route }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Controles Infantiles por Edad</Text>
+      <Text>Nombre completo: </Text>
       <TextInput style={styles.input} placeholder="Nombre" value={name} onChangeText={updateField(setName)} />
+      <Text>Fecha: </Text>
       <TextInput style={styles.input} placeholder="Fecha" value={date} onChangeText={updateField(setDate)} />
+        <Text>Hora: </Text>
       <TextInput style={styles.input} placeholder="Hora" value={hour} onChangeText={updateField(setHour)} />
       {rows.map((row, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.rowTitle}>Control #{i + 1}</Text>
+          <Text>Edad: </Text>
           <TextInput
             style={styles.input}
             placeholder="Edad"
             value={row.age}
             onChangeText={(v) => updateRow(i, 'age', v)}
           />
+          <Text>Peso: </Text>
           <TextInput
             style={styles.input}
             placeholder="Peso"
             value={row.weight}
             onChangeText={(v) => updateRow(i, 'weight', v)}
           />
+          <Text>Talla: </Text>
           <TextInput
             style={styles.input}
             placeholder="Talla"
             value={row.height}
             onChangeText={(v) => updateRow(i, 'height', v)}
           />
+          <Text>Nota: </Text>
           <TextInput
             style={styles.input}
             placeholder="Notas"
@@ -139,6 +146,11 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 15,
+  },
+  Text:{
+    fontFamily: 'Roboto',
+    fontSize: 16,
+    color: '#333',
   },
   input: {
     borderWidth: 1,

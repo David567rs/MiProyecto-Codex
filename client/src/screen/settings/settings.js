@@ -81,6 +81,16 @@ const Settings = ({ route, navigation }) => {
                                                                 </ListItem.Content>
                                                                 <ListItem.Chevron color='#48A2E2' size={30} />
                                                         </ListItem>
+
+                                                        {session?.profession?.toLowerCase().includes('doctor') && (
+                                                                <ListItem containerStyle={{ paddingVertical: 5 }} onPress={() => navigation.navigate('sendhealthreport')}>
+                                                                        <Image source={require('../../../assets/icons/icons8-correo-100.png')} style={{ width: 30, height: 30 }} />
+                                                                        <ListItem.Content>
+                                                                                <ListItem.Title style={{ fontSize: 18 }}>Enviar reporte</ListItem.Title>
+                                                                        </ListItem.Content>
+                                                                        <ListItem.Chevron color='#48A2E2' size={30} />
+                                                                </ListItem>
+                                                        )}
                                                 </>
                                         )}
                                 </View>

@@ -59,4 +59,10 @@ export class EmailsController {
   async sendNotification(@Body('campaignId') campaignId: string) {
     return this.emailsService.sendNotificationCampaign(campaignId);
   }
+
+  @Post('send-health-report')
+  async sendHealthReport(@Body('parentEmail') parentEmail: string, @Body('specifications') specifications: string, ) {
+    return this.emailsService.sendHealthReportToParent(parentEmail, specifications);
+  }
+
 }

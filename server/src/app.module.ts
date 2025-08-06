@@ -22,6 +22,7 @@ import { DevelopmentModule } from './development/development.module';
 import { AgeControlModule } from './age-control/age-control.module';
 import { DetectionModule } from './detection/detection.module';
 import { AlarmSignsModule } from './alarm-signs/alarm-signs.module';
+import { DentalRecordModule } from './dental-record/dental-record.module';
 
 @Module({
         imports: [
@@ -46,6 +47,7 @@ import { AlarmSignsModule } from './alarm-signs/alarm-signs.module';
                 AgeControlModule,
                 DetectionModule,
                 AlarmSignsModule,
+                DentalRecordModule,
         ],
 })
 export class AppModule implements NestModule {

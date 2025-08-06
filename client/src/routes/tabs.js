@@ -43,6 +43,8 @@ import EarlyDetection from '../screen/childDevelopment/earlyDetection'
 import vaccineListP from '../screen/vaccineList/vaccineListP'
 import VaccineDetailP from '../screen/vaccineDetail/vaccineDetailP'
 import CrianzaCarinosa from '../screen/childDevelopment/crianzaCarinosa'
+import DentalControl from '../screen/dentalControl/dentalControl'
+import SendHealthReport from '../screen/sendHealthReport/sendHealthReport'
 
 const Tabs = createBottomTabNavigator()
 
@@ -1325,6 +1327,71 @@ const TabScreen = () => {
                                         headerTintColor: '#FFFFFF',
                                 })}
                         />
+
+                         <Tabs.Screen
+                                name='dentalcontrol'
+                                component={DentalControl}
+                                options={({ route, navigation }) => ({
+                                        title: null,
+                                        tabBarButton: () => null,
+                                        headerStyle: {
+                                                backgroundColor: '#48A2E2',
+                                        },
+                                        headerLeft: () => (
+                                                <Button
+                                                        color='transparent'
+                                                        icon={
+                                                                <Icon
+                                                                        type='ionicons'
+                                                                        name='arrow-back'
+                                                                        size={30}
+                                                                        color='#FFFFFF'
+                                                                />
+                                                        }
+                                                        onPress={() => navigation.navigate('profilechildren', { children: route.params?.children })}
+                                                />
+                                        ),
+                                        headerTitle: 'Control dental',
+                                        headerTitleAlign: 'center',
+                                        headerRight: () => (
+                                                <Image source={require('../../assets/MEDICAL-(Instagram Story).png')} style={{ width: 45, height: 45, marginRight: 5 }} />
+                                        ),
+                                        headerTintColor: '#FFFFFF',
+                                })}
+                        />
+
+                        <Tabs.Screen
+                                                name='sendhealthreport'
+                                                component={SendHealthReport}
+                                                options={({ route, navigation }) => ({
+                                                        title: null,
+                                                        tabBarButton: () => null,
+                                                        headerStyle: {
+                                                                backgroundColor: '#48A2E2',
+                                                        },
+                                                        headerLeft: () => (
+                                                                <Button
+                                                                        color='transparent'
+                                                                        icon={
+                                                                                <Icon
+                                                                                        type='ionicons'
+                                                                                        name='arrow-back'
+                                                                                        size={30}
+                                                                                        color='#FFFFFF'
+                                                                                />
+                                                                        }
+                                                                        onPress={() => navigation.navigate('settings')}
+                                                                />
+                                                        ),
+                                                        headerTitle: 'Enviar Reporte',
+                                                        headerTitleAlign: 'center',
+                                                        headerRight: () => (
+                                                                <Image source={require('../../assets/MEDICAL-(Instagram Story).png')} style={{ width: 45, height: 45, marginRight: 5 }} />
+                                                        ),
+                                                        headerTintColor: '#FFFFFF',
+                                                })}
+                                        />
+
 
                 </Tabs.Navigator>
         )

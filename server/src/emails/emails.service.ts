@@ -8,7 +8,15 @@ import { VaccineMonth } from '../schemas/vaccineMonth.schema';
 import { Vaccine } from '../schemas/vaccine.schema';
 import { Children } from '../schemas/children.schema';
 import { Campaigns } from '../schemas/campaigns.schema';
+import { AgeControl } from '../schemas/agecontrol.schema';
+import { Detection } from '../schemas/detection.schema';
+import { AlarmSign } from '../schemas/alarmSign.schema';
+import { Development } from '../schemas/development.schema'; 
+import { DentalRecord } from '../schemas/dentalRecord.schema';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import PDFTable from 'pdfkit-table';
+import { DevelopmentService } from '../development/development.service';
 
 @Injectable()
 export class EmailsService {
@@ -29,6 +37,17 @@ export class EmailsService {
                 @InjectModel(Vaccine.name) private vaccineModel: Model<Vaccine>,
                 @InjectModel(Campaigns.name)
                 private CampaignsModel: Model<Campaigns>,
+                @InjectModel(AgeControl.name)
+                private ageControlModel: Model<AgeControl>,
+                @InjectModel(Detection.name)
+                private detectionModel: Model<Detection>,
+                @InjectModel(AlarmSign.name)
+                private alarmSignModel: Model<AlarmSign>,
+                @InjectModel(Development.name)
+                private developmentModel: Model<Development>,
+                @InjectModel(DentalRecord.name)  
+                private dentalRecordModel: Model<DentalRecord>,
+                private readonly devService: DevelopmentService,
         ) {
                 this.transporter = nodemailer.createTransport({
                         service: 'gmail',
@@ -168,9 +187,11 @@ export class EmailsService {
     const notifications = {};
     const upcomingVaccinations = {};
     const appliedVaccinations = {};
+    const sendDate = new Date();
 
     for (const child of children) {
       const birthDate = this.parseDateOfBirth(child.dateOfBirth);
+      const childFullName = `${child.name} ${child.lastName} ${child.secondLastName}`;
       // Asegúrate de que childVaccines sea un array
       const childVaccinesArray = Array.isArray(child.vaccines) ? child.vaccines : [child.vaccines];
 
@@ -183,19 +204,19 @@ export class EmailsService {
 
         if (missingVaccines.length > 0) {
           if (currentDate > expectedVaccineDate) {
-            if (!notifications[child.name]) {
-              notifications[child.name] = [];
+              if (!notifications[childFullName]) {
+              notifications[childFullName] = [];
             }
-            notifications[child.name].push(...missingVaccines.map(vaccineId => ({
+            notifications[childFullName].push(...missingVaccines.map(vaccineId => ({
               vaccineId,
               expectedVaccineDate,
               delayDays: this.calculateDaysDifference(expectedVaccineDate, currentDate)
             })));
           } else {
-            if (!upcomingVaccinations[child.name]) {
-              upcomingVaccinations[child.name] = [];
+            if (!upcomingVaccinations[childFullName]) {
+              upcomingVaccinations[childFullName] = [];
             }
-            upcomingVaccinations[child.name].push(...missingVaccines.map(vaccineId => ({
+            upcomingVaccinations[childFullName].push(...missingVaccines.map(vaccineId => ({
               vaccineId,
               expectedVaccineDate
             })));
@@ -203,10 +224,10 @@ export class EmailsService {
         }
 
         if (appliedVaccinesForMonth.length > 0) {
-          if (!appliedVaccinations[child.name]) {
-            appliedVaccinations[child.name] = [];
+          if (!appliedVaccinations[childFullName]) {
+            appliedVaccinations[childFullName] = [];
           }
-          appliedVaccinations[child.name].push(...appliedVaccinesForMonth.map(vaccineId => ({
+          appliedVaccinations[childFullName].push(...appliedVaccinesForMonth.map(vaccineId => ({
             vaccineId,
             applicationDate: new Date() // Aquí puedes ajustar la fecha de aplicación si es necesario
           })));
@@ -235,7 +256,7 @@ export class EmailsService {
       from: `"Sistema de vacunas" <${this.email}>`,
       to: parentEmail,
       subject: 'Notificación de vacunas',
-      html: await this.buildNotificationHtml(notifications, upcomingVaccinations, appliedVaccinations, observation),
+      html: await this.buildNotificationHtml(notifications, upcomingVaccinations, appliedVaccinations, observation, sendDate),
       attachments: [
         {
           filename: 'header.jpg',
@@ -278,7 +299,13 @@ export class EmailsService {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }
 
-  private async buildNotificationHtml(notifications: any, upcomingVaccinations: any, appliedVaccinations: any, observation: string): Promise<string> {
+  private async buildNotificationHtml(
+    notifications: any,
+    upcomingVaccinations: any,
+    appliedVaccinations: any,
+    observation: string,
+    sendDate: Date,
+  ): Promise<string> {
     let html = `
       <!DOCTYPE html>
       <html>
@@ -326,6 +353,7 @@ export class EmailsService {
         </div>
         <div class="content">
           <h1>Notificación de vacunas</h1>
+          <p>Fecha de envío: ${sendDate.toLocaleDateString('es-ES')}</p>
     `;
 
     for (const childName in notifications) {
@@ -478,6 +506,342 @@ export class EmailsService {
         console.error('Error al enviar correo:', error);
       }
     }
+  }
+  //Enviar reporte por medio de sus correos a los padres 
+  async sendHealthReportToParent(parentEmail: string, specifications?: string ) {
+  // 1. Busca al padre (usuario tipo 'paciente')
+  const parent = await this.userModel.findOne({
+    email: parentEmail,
+    typeUser: 'paciente',
+  });
+  if (!parent) {
+    throw new NotFoundException('Padre no encontrado');
+  }
+
+  // 2. Busca hijos asociados
+  const children = await this.childrenModel
+    .find({ parentId: parent._id.toString() })
+    .lean()
+    .exec();
+  if (!children.length) {
+    throw new NotFoundException('No se encontraron hijos asociados');
+  }
+
+  // 3. Requiere el documento con tablas integrado (pdfkit-table)
+  //    (ya no usamos registerPlugin)
+  const PDFDocument = require('pdfkit-table');
+  const doc = new PDFDocument();
+
+  // 4. Captura los chunks de datos para armar el Buffer al final
+  const buffers: Buffer[] = [];
+  doc.on('data', (chunk) => buffers.push(chunk));
+
+  // 5. Cabecera del PDF
+  doc.fontSize(20).text('Reporte de Salud', { align: 'center' });
+  doc
+      .fontSize(12)
+      .text(`Fecha de envío: ${new Date().toLocaleDateString('es-ES')}`, {
+        align: 'center',
+      });
+  doc.moveDown();
+
+  if (specifications) {
+    doc
+      .fontSize(12)
+      .text('Especificaciones del doctor:', { underline: true });
+    doc
+      .fontSize(12)
+      .text(specifications, { indent: 10, lineGap: 4 });
+    doc.moveDown();
+  }
+
+  // 6. Por cada hijo, va agregando secciones
+  for (const child of children) {
+    // Nombre del niño
+    doc.fontSize(16).text(`${child.name} ${child.lastName}`, { underline: true });
+    doc.moveDown(0.5);
+
+    const age = await this.ageControlModel
+  .findOne({ childId: child._id })
+  .lean()
+  .exec();
+
+if (age?.controls?.length) {
+  // descarta controles que estén completamente vacíos
+  const ageRows = age.controls
+    .filter(c => c.age || c.weight || c.height || c.notes)
+    .map(c => [
+      c.age ?? '',
+      c.weight ?? '',
+      c.height ?? '',
+      c.notes ?? '',
+    ]);
+
+  await doc.table(
+    {
+      title: { label: 'Control de Edad', fontSize: 14 },
+      headers: ['Edad', 'Peso', 'Altura', 'Notas'],
+      rows: ageRows,
+    },
+    {
+      width: 500,
+      startY: doc.y,
+      padding: 5,
+      columnSpacing: 5,
+    }
+  );
+
+  doc.moveDown();
+}
+
+// Helper dentro de sendHealthReportToParent, al inicio del método
+function ensureSpace(requiredHeight: number) {
+  const bottomLimit = doc.page.height - doc.page.margins.bottom;
+  if (doc.y + requiredHeight > bottomLimit) {
+    doc.addPage();
+  }
+}
+
+// 1) Helpers y datos
+const dev = await this.devService.findByChild(child._id.toString());
+const defaultAreas = ['Motor','Lenguaje','Social','Conocimiento'];
+
+function parseAgeBlock(block: string) {
+  const [numStr, unit] = block.trim().split(' ');
+  return { value: Number(numStr), unit: unit.toLowerCase() };
+}
+
+// 2) Extrae sólo los registros de “meses”
+const mesRecords = dev.records.filter(r =>
+  parseAgeBlock(r.ageBlock).unit.startsWith('mes')
+);
+
+// 3) Saca y ordena la lista de bloques distintos (1 mes, 3 meses, 6 meses…)
+const bloquesMeses = Array.from(new Set(
+  mesRecords.map(r => r.ageBlock)
+)).sort((a, b) =>
+  parseAgeBlock(a).value - parseAgeBlock(b).value
+);
+
+// 4) Filtra solo los bloques que tengan al menos un hito “Sí”
+const bloquesActivos = bloquesMeses.filter(bloque => {
+  const registro = mesRecords.find(r => r.ageBlock === bloque);
+  return registro?.milestones.some(m => m.value);
+});
+
+// 5) Para cada bloque activo, genera sus tablas de “Sí” y “No”
+for (const bloque of bloquesActivos) {
+  // 5.1) Filtrar registros de este bloque
+  const registros = mesRecords.filter(r => r.ageBlock === bloque);
+
+  // 5.2) Mapear a filas
+  const filas = registros.flatMap(r =>
+    r.milestones.map((m, i) => ({
+      ageBlock: r.ageBlock,
+      area:     m.area?.trim() ? m.area : defaultAreas[i] ?? '—',
+      question: m.question,
+      response: m.value ? 'Sí' : 'No',
+    }))
+  );
+
+  // 5.3) Separar “Sí” y “No”
+  const filasSi = filas.filter(f => f.response === 'Sí');
+  const filasNo = filas.filter(f => f.response === 'No');
+
+  // 5.4) Dibujar tabla de cumplidos
+  if (filasSi.length) {
+    ensureSpace(filasSi.length * 30 + 40);
+    await doc.table(
+      {
+        title:   { label: `Cumplidos (${bloque})`, fontSize: 14 },
+        headers: [
+          { label: 'Bloque',    property: 'ageBlock', width:  80 },
+          { label: 'Área',      property: 'area',     width: 100 },
+          { label: 'Pregunta',  property: 'question', width: 260 },
+          { label: 'Respuesta', property: 'response', width:  60 },
+        ],
+        datas: filasSi,
+      },
+      { width: 500, startY: doc.y, padding: 5, columnSpacing: 5 }
+    );
+    doc.moveDown(1);
+  }
+
+  // 5.5) Dibujar tabla de pendientes
+  if (filasNo.length) {
+    ensureSpace(filasNo.length * 30 + 40);
+    await doc.table(
+      {
+        title:   { label: `Pendientes (${bloque})`, fontSize: 14 },
+        headers: [
+          { label: 'Bloque',    property: 'ageBlock', width:  80 },
+          { label: 'Área',      property: 'area',     width: 100 },
+          { label: 'Pregunta',  property: 'question', width: 260 },
+          { label: 'Respuesta', property: 'response', width:  60 },
+        ],
+        datas: filasNo,
+      },
+      { width: 500, startY: doc.y, padding: 5, columnSpacing: 5 }
+    );
+    doc.moveDown(2);
+  }
+}
+
+// === Detección temprana (tabla) ===
+const det = await this.detectionModel
+  .findOne({ childId: child._id })
+  .lean()
+  .exec();
+
+if (det) {
+  const detRows = det.responses.map((res) => [
+    res.question,
+    res.value ? 'Sí' : 'No',
+  ]);
+
+  if (detRows.length) {
+    // Reserva espacio (aprox. 120px)
+    ensureSpace(120);
+
+    await doc.table(
+      {
+        title:   { label: 'Detección Temprana', fontSize: 14 },
+        headers: [
+          { label: 'Pregunta',  property: '0', width: 350 },
+          { label: 'Respuesta', property: '1', width: 100 },
+        ],
+        rows: detRows,
+      },
+      {
+        width: 500,
+        startY: doc.y,
+        padding: 5,
+        columnSpacing: 5,
+      },
+    );
+    doc.moveDown(2);
+  }
+
+  if (det.observations) {
+    ensureSpace(50);
+    doc.fontSize(12).text(`Observaciones: ${det.observations}`, { indent: 10 });
+    doc.moveDown(2);
+  }
+}
+
+const ALARM_SIGNS = [
+  'Dificultad para respirar o respira muy rápido.',
+  'Fiebre arriba de 38°C.',
+  'Cordón umbilical rojo, con mal olor o secreción.',
+  'Llanto débil o incontrolable.',
+  'No come o succión débil.',
+  'Fontanela hundida o abombada.',
+  'No orina.',
+];
+
+// 2) Si por alguna razón quisieras usar child.earlyDetection.signsOfAlarm,
+//    hazlo aquí; si no viene, usa la constante ALARM_SIGNS:
+const rawSigns = Array.isArray(child.earlyDetection?.signsOfAlarm) && child.earlyDetection.signsOfAlarm.length
+  ? child.earlyDetection.signsOfAlarm
+  : ALARM_SIGNS;
+
+// 3) Prepara las filas para pdfkit-table
+const alarmSignsRows = rawSigns
+  .filter(sign => !!sign)   // elimina entradas vacías
+  .map(sign => [ sign ]);   // cada fila es un array de un solo elemento
+
+// 4) Dibuja la tabla si hay al menos un signo
+if (alarmSignsRows.length) {
+  ensureSpace(100);  // ajusta el espacio si lo necesitas
+  await doc.table(
+    {
+      title:   { label: 'Signos de Alarma', fontSize: 14 },
+      headers: [{ label: 'Signo', property: '0', width: 500 }],
+      rows:    alarmSignsRows,
+    },
+    {
+      width:         500,
+      startY:        doc.y,
+      padding:       5,
+      columnSpacing: 5,
+    },
+  );
+  doc.moveDown(2);
+}
+
+// === Controles Dentales (ejecutar dentro del for de cada child) ===
+const dentalRecords = await this.dentalRecordModel
+  .find({ childId: child._id.toString() })
+  .lean()
+  .exec();
+
+if (dentalRecords.length > 0) {
+  ensureSpace(dentalRecords.length * 40 + 40);
+  const dentalRows = dentalRecords.map(rec => [
+    new Date(rec.date).toLocaleDateString('es-ES'),
+    rec.visitType,
+    rec.observation,
+  ]);
+  await doc.table(
+    {
+      title:   { label: 'Controles Dentales', fontSize: 14 },
+      headers: ['Fecha', 'Medida', 'Observación'],
+      rows:    dentalRows,
+    },
+    { width: 500, startY: doc.y, padding: 5, columnSpacing: 5 },
+  );
+  doc.moveDown(2);
+}
+
+
+// === Recomendación de cita ===
+/*const needsAppointment =
+  age?.controls?.some((c) => c.medicalCheck) ||
+  det?.suspect ||
+  Boolean(alarm?.diagnosis?.trim());
+
+ensureSpace(50);
+doc
+  .fontSize(12)
+  .text(
+    needsAppointment
+      ? 'Se recomienda agendar una cita médica.'
+      : 'No requiere cita médica por ahora.',
+  );
+
+    doc.moveDown(2);
+// Página nueva para el siguiente hijo
+    doc.addPage();
+
+  }*/
+
+  // 7. Termina el PDF y arma el Buffer final
+  const pdfBuffer: Buffer = await new Promise((resolve, reject) => {
+    doc.end();
+    doc.on('end', () => resolve(Buffer.concat(buffers)));
+    doc.on('error', reject);
+  });
+
+  // 8. Envía el correo con el PDF adjunto
+  const mailOptions = {
+    from: `"Sistema de vacunas" <${this.email}>`,
+    to: parentEmail,
+    subject: 'Reporte de salud de sus hijos',
+    text: 'Adjunto encontrará el reporte de salud',
+    attachments: [{ filename: 'reporte_salud.pdf', content: pdfBuffer }],
+  };
+
+  try {
+    const info = await this.transporter.sendMail(mailOptions);
+    console.log('Correo enviado: %s', info.messageId);
+    return { success: true };
+  } catch (error) {
+    console.error('Error al enviar correo:', error);
+    throw error;
+  }
+}
+
+
   }
 
   private buildCampaignNotificationHtml(campaign: any): string {

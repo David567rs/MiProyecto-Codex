@@ -89,6 +89,16 @@ export class Children extends Document {
         @Prop()
         hospital: string;
 
+         @Prop({
+                type: {
+                        signsOfAlarm: { type: [String], default: [] },
+                },
+                default: {},
+        })
+        earlyDetection?: {
+                signsOfAlarm?: string[];
+        };
+        
         @Prop({
                 type: String,
                 default: null,

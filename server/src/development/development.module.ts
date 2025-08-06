@@ -12,5 +12,6 @@ import { DevelopmentService } from './development.service';
         ],
         controllers: [DevelopmentController],
         providers: [DevelopmentService],
+        exports: [DevelopmentService],
 })
 export class DevelopmentModule {}

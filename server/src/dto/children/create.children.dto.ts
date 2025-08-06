@@ -69,4 +69,9 @@ export class CreateChildrenDto {
 
         @IsOptional()
         hospital: string;
+
+         @IsOptional()
+        earlyDetection?: {
+                signsOfAlarm?: string[];
+        };
 }
