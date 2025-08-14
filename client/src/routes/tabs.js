@@ -43,7 +43,7 @@ import EarlyDetection from '../screen/childDevelopment/earlyDetection'
 import vaccineListP from '../screen/vaccineList/vaccineListP'
 import VaccineDetailP from '../screen/vaccineDetail/vaccineDetailP'
 import CrianzaCarinosa from '../screen/childDevelopment/crianzaCarinosa'
-import DentalControl from '../screen/dentalControl/dentalControl'
+import DentalControl from '../screen/dentalControl/dentalcontrol'
 import SendHealthReport from '../screen/sendHealthReport/sendHealthReport'
 
 const Tabs = createBottomTabNavigator()
